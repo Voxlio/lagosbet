@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LagosBet Finder</title>
+<style>
+:root{--bg:#0f3d2e;--ink:#f4f7f2;--dim:#9fc2b2;--line:#f4f7f255;--hi:#f5e663;--card:#14503b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(rgba(15,61,46,0.92), rgba(15,61,46,0.92)), url('/image/lagosl.jpg?auto=format&fit=crop&w=1920&q=80') center center / cover no-repeat fixed, var(--bg);color:var(--ink);font:16px/1.45 "Avenir Next",Futura,system-ui,sans-serif;padding:16px;max-width:720px;margin:auto;min-height:100vh}
+header{display:flex;align-items:center;gap:14px;padding:10px 0 14px;margin-bottom:14px;border-bottom:2px solid var(--line)}.logo{width:60px;height:60px;flex:none}h1{font-size:30px;line-height:1.1;margin:0;letter-spacing:-.5px}.tag{margin:4px 0 0;color:var(--dim);font-size:14px}h2{font-size:18px;margin:22px 0 8px}
+nav{display:flex;gap:8px;margin-bottom:14px}nav button{flex:1}
+button,input,textarea{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:6px;padding:10px}
+button{cursor:pointer}button.on,button.go{background:var(--hi);color:#0f3d2e;border-color:var(--hi);font-weight:700}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--hi)}
+textarea{width:100%;min-height:150px}input{width:100%}.row{display:flex;gap:8px;align-items:center;margin:8px 0}
+table{width:100%;border-collapse:collapse}td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
+td:first-child,th:first-child{text-align:left}.o{padding:6px 2px;min-width:46px}.o.sel{background:var(--hi);color:#0f3d2e;border-color:var(--hi)}
+.sc{font-weight:700;font-size:18px}.w{background:var(--hi);color:#0f3d2e;border-radius:4px;padding:1px 6px}
+.dim{color:var(--dim);font-size:14px}.hide{display:none}.msg{padding:10px;border:2px dashed var(--line);border-radius:6px;margin:10px 0}
+footer{margin-top:40px;padding:16px 0;border-top:1px solid var(--line);text-align:center;color:var(--dim);font-size:13px}
+</style></head><body>
+<header><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="logo" role="img" aria-label="Round Finder logo">
+<rect class="logo" rx="14" fill="#14503b"/>
+<rect x="5" y="5" width="54" height="54" rx="10" fill="none" stroke="#f4f7f2" stroke-opacity=".5" stroke-width="2"/>
+<line x1="5" y1="32" x2="59" y2="32" stroke="#f4f7f2" stroke-opacity=".5" stroke-width="2"/>
+<circle cx="28" cy="29" r="15" fill="#0f3d2e" stroke="#f5e663" stroke-width="4"/>
+<polygon points="28,22 34,26.5 31.8,33.5 24.2,33.5 22,26.5" fill="#f5e663"/>
+<line x1="39" y1="40" x2="52" y2="53" stroke="#f5e663" stroke-width="6" stroke-linecap="round"/>
+</svg>
+<div><h1>LagosBet Finder</h1><p class="tag">Fixtures, odds and results for any round</p></div></header>
+
+<section id="p2">
+ <p class="dim">Paste the 8 games, one per line like <b>Real Madrid v Man City</b>. Add the first game's odds so it works on any browser.</p>
+ <textarea id="games" placeholder="Real Madrid v Man City&#10;Spurs v Milan&#10;..."></textarea>
+ <div class="row"><input id="od" placeholder="First game odds: 1.61 3.07 5.79"></div>
+ <button class="go" id="find">Find Ticket</button>
+ <div id="out2"></div>
+</section>
+
+<section id="slip" class="hide">
+ <h2>Slip</h2><div id="sl"></div>
+ <div class="row"><input id="stake" type="number" inputmode="numeric" value="100" aria-label="Stake"></div>
+</section>
+
+<footer>
+  oh yeah! Carterlist did this lol. Don't blame me if your tickets cut lol!
+</footer>
+
+<script>
+const LIM={min:100,max:1e5,maxPicks:8,maxOdds:500};
+const Y=["Arsenal","Chelsea","Man United","Liverpool","Man City","Spurs","Newcastle","Aston Villa","Barcelona","Real Madrid","Atlético","Bayern","Dortmund","PSG","Juventus","Inter","Milan","Napoli","Enyimba","Rangers","Kano Pillars","Shooting Stars","Remo Stars","Rivers United"];
+function E(e){let o=e>>>0;return()=>{let e=o=o+0x6d2b79f5>>>0;return e=Math.imul(e^e>>>15,1|e),(((e^=e+Math.imul(e^e>>>7,61|e))^e>>>14)>>>0)/0x100000000}}
+const P=e=>Math.round(100*e)/100;
+// k = number of random numbers the browser's shuffle used; with teams given, the shuffle is skipped
+function fixtures(R,teams,k){const o=E(7919*R+13);let t;
+ if(teams){for(let j=0;j<k;j++)o();t=teams}else t=[...Y].sort(()=>o()-.5);
+ return Array.from({length:8},(_,a)=>{let i=.35*o()-.15,n=.42+i,r=.3-i,s=.24+.08*o(),l=n+s+r;n/=l;s/=l;r/=l;
+ return{id:a,home:t[2*a],away:t[2*a+1],odds:{1:P(1/(1.12*n)),X:P(1/(1.12*s)),2:P(1/(1.12*r))},probs:{1:n,X:s,2:r}}})}
+function result(R,f){const t=E(104729*R+31*f.id+7),a=t(),p=f.probs,i=a<p[1]?"1":a<p[1]+p.X?"X":"2",n=()=>Math.floor(3*t());
+ if(i==="X"){const e=n();return{pick:i,score:[e,e]}}const r=n(),s=r+1+Math.floor(2*t());return{pick:i,score:i==="1"?[s,r]:[r,s]}}
+
+const $=id=>document.getElementById(id);let state={R:0,fx:[],sel:{}};
+
+function render(R,fx,el){state={R,fx,sel:{}};
+ el.innerHTML=`<table><tr><th>Match</th><th>1</th><th>X</th><th>2</th><th>Score</th></tr>`+fx.map(f=>{const r=result(R,f);f.res=r;
+ return`<tr><td>${f.home} v ${f.away}</td>`+["1","X","2"].map(k=>`<td><button class="o" data-i="${f.id}" data-k="${k}">${f.odds[k]}</button></td>`).join("")+`<td class="sc">${r.score.join("-")}</td></tr>`}).join("")+`</table>
+ <p class="dim">Oh yeah! Mazard did this. lol.</p>`;
+ el.querySelectorAll(".o").forEach(b=>{if(fx[b.dataset.i].res.pick===b.dataset.k)b.style.borderColor="#f5e663";b.onclick=()=>pick(b)});
+ $("slip").classList.add("hide");$("sl").innerHTML=""}
+function pick(b){const i=b.dataset.i,k=b.dataset.k;if(state.sel[i]===k)delete state.sel[i];else state.sel[i]=k;
+ document.querySelectorAll(`.o[data-i="${i}"]`).forEach(x=>x.classList.toggle("sel",state.sel[i]===x.dataset.k));slip()}
+function slip(){const ids=Object.keys(state.sel);$("slip").classList.toggle("hide",!ids.length);if(!ids.length)return;
+ const raw=ids.reduce((a,i)=>a*state.fx[i].odds[state.sel[i]],1),odds=Math.min(raw,LIM.maxOdds),stake=+$("stake").value;
+ const won=ids.every(i=>state.fx[i].res.pick===state.sel[i]);let m="";
+ if(ids.length>LIM.maxPicks)m="Too many picks (max "+LIM.maxPicks+").";else if(stake<LIM.min||stake>LIM.max)m=`Stake must be ${LIM.min}–${LIM.max}.`;
+ $("sl").innerHTML=`<div class="msg">${ids.length} pick(s) · total odds <b>${P(odds)}</b>${raw>LIM.maxOdds?" (capped)":""}<br>Win would pay <b>${Math.round(stake*odds)}</b><br>Result: <span class="w">${m||(won?"WON":"LOST")}</span></div>`}
+$("stake").oninput=slip;
+
+$("find").onclick=()=>{const out=$("out2");out.innerHTML='<p class="dim">Searching…</p>';setTimeout(()=>{
+ const lines=$("games").value.split("\n").map(s=>s.trim()).filter(Boolean),teams=[];
+ for(const l of lines){const p=l.split(/\s+(?:v|vs|-)\s+/i);if(p.length!=2){out.innerHTML=`<div class="msg">Can't read "${l}". Use "Home v Away".</div>`;return}
+  for(const n of p){const t=Y.find(y=>y.toLowerCase()===n.trim().toLowerCase());if(!t){out.innerHTML=`<div class="msg">Unknown team "${n}".</div>`;return}teams.push(t)}}
+ if(lines.length!=8){out.innerHTML='<div class="msg">Paste exactly 8 games.</div>';return}
+ const od=$("od").value.trim().split(/[\s,\/]+/).map(Number);
+ if(od.length==3&&od.every(x=>x>0)){
+  for(let R=0;R<5000;R++)for(let k=0;k<=300;k++){const f=fixtures(R,teams,k)[0];
+   if(f.odds[1]===od[0]&&f.odds.X===od[1]&&f.odds[2]===od[2]){out.innerHTML=`<h2>Round ${R}</h2><div id="r"></div>`;render(R,fixtures(R,teams,k),$("r"));return}}
+ }else{for(let R=0;R<30000;R++){const f=fixtures(R);if(f.every((x,i)=>x.home===teams[2*i]&&x.away===teams[2*i+1])){
+  out.innerHTML=`<h2>Round ${R}</h2><div id="r"></div>`;render(R,f,$("r"));return}}}
+ out.innerHTML='<div class="msg">No round found. Add the first game\'s odds and try again.</div>'},30)};
+</script></body></html>

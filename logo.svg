@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Round Finder logo">
+<rect width="64" height="64" rx="14" fill="#14503b"/>
+<rect x="5" y="5" width="54" height="54" rx="10" fill="none" stroke="#f4f7f2" stroke-opacity=".5" stroke-width="2"/>
+<line x1="5" y1="32" x2="59" y2="32" stroke="#f4f7f2" stroke-opacity=".5" stroke-width="2"/>
+<circle cx="28" cy="29" r="15" fill="#0f3d2e" stroke="#f5e663" stroke-width="4"/>
+<polygon points="28,22 34,26.5 31.8,33.5 24.2,33.5 22,26.5" fill="#f5e663"/>
+<line x1="39" y1="40" x2="52" y2="53" stroke="#f5e663" stroke-width="6" stroke-linecap="round"/>
+</svg>
