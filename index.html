@@ -73,7 +73,12 @@ footer{max-width:680px;margin:0 auto;padding:0 18px 40px;color:var(--mute);font-
 <ul class="fx" id="fixtures"></ul>
 <div class="go-row"><button class="btn" id="prev" type="button">Previous round</button><button class="btn" id="next" type="button">Next round</button></div></section>
 </main>
-<footer><p><b>How it works.</b>Why do you want to know? lol</p></footer>
+<footer><p><b>How it works.</b>Why do you want to know? lol</p><p><b>Visits:</b> <b id="visits">–</b></p></footer>
+<script>
+fetch("/api/visits").then(r=>r.json()).then(d=>{
+  document.getElementById("visits").textContent=d.visits.toLocaleString();
+}).catch(()=>{});
+</script>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
