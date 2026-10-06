@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="LagosBet">
+  <title>LagosBet</title>
+  <rect width="48" height="48" rx="11" fill="#15171C"/>
+  <g fill="#FFC400">
+    <rect x="12" y="9" width="9" height="30" rx="2.5"/>
+    <rect x="12" y="30" width="24" height="9" rx="2.5"/>
+  </g>
+</svg>

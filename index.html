@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fixture Finder</title>
+<title>LagosBet</title>
 <meta name="description" content="Paste the first two games with their odds to find the round and see every fixture and result.">
 <meta name="theme-color" content="#15171C">
-<link rel="icon" href="flowty-logo.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="flowty-logo.svg">
+<link rel="icon" href="lagosbet-logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="lagosbet-logo.svg">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{color-scheme:light;--paper:#E4E6E9;--panel:#F7F8F9;--slip:#FCFBF7;--ink:#15171C;--mute:#6B7079;--rule:#C9CDD3;--win:#0B6B45;--loss:#B22A2F;
@@ -14,7 +14,7 @@
 body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 h2{margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.15}p{margin:0}
 .bar{background:var(--ink);color:#fff}.bar-in{max-width:680px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:11px}
-.mark{width:30px;height:30px;flex:none}.word{font-size:25px;font-weight:800;letter-spacing:-.045em;line-height:1}
+.wordmark{width:auto;height:28px;flex:none}.word{font-size:25px;font-weight:800;letter-spacing:-.045em;line-height:1}
 .bar-bal{margin-left:auto;text-align:right;font-family:var(--mono);font-size:14px;line-height:1.25}
 .bar-bal b{display:block;font:700 18px var(--sans)}.bar-bal span{color:#A7ADB8}
 main{max-width:680px;margin:0 auto;padding:18px 18px 40px;display:grid;gap:18px}
@@ -43,7 +43,7 @@ textarea{margin-top:12px;min-height:148px;resize:vertical;font:14px/1.6 var(--mo
 .slip-wrap{display:grid;justify-items:center}
 .slip{width:100%;max-width:370px;background:var(--slip);border-radius:8px 8px 0 0;padding:16px 18px 14px;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.1),0 8px 22px -14px rgba(21,23,28,.5)}
 .slip-foot{width:100%;max-width:370px;height:12px;background:radial-gradient(circle at 6px 15px,transparent 6px,var(--slip) 6px) 0 0/12px 12px repeat-x;filter:drop-shadow(0 4px 8px rgba(21,23,28,.18))}
-.slip-top{display:flex;align-items:center;gap:8px;padding-bottom:12px}.slip-top .mark{width:17px;height:17px}.slip-top .word{font-size:17px}
+.slip-top{display:flex;align-items:center;gap:8px;padding-bottom:12px}.slip-top .wordmark{width:auto;height:28px}.slip-top .word{font-size:17px}
 .slip-serial{margin-left:auto;font:13px var(--mono);color:var(--mute)}
 .tear{position:relative;border-top:2px dashed var(--rule);padding-top:14px}
 .tear::before,.tear::after{content:"";position:absolute;top:-12px;width:20px;height:20px;border-radius:50%;background:var(--paper)}.tear::before{left:-28px}.tear::after{right:-28px}
@@ -60,8 +60,8 @@ footer{max-width:680px;margin:0 auto;padding:0 18px 40px;color:var(--mute);font-
 .go-row{display:flex;gap:9px;margin-top:12px}.go-row .btn{flex:1}.found{margin-top:4px;color:var(--mute);font:14px var(--mono)}
 </style></head><body>
 <header class="bar"><div class="bar-in">
-<svg class="mark" viewBox="0 0 48 48" role="img" aria-label="Fixture Finder"><g fill="#fff"><rect x="9" y="10" width="7" height="28" rx="1.5"/><rect x="18" y="10" width="21" height="7" rx="1.5"/><rect x="18" y="21" width="14" height="7" rx="1.5"/></g></svg>
-<span class="word">fixture finder</span></div></header>
+<img class="wordmark"src="lagosbet-wordmark.svg" alt="LagosBet logo">
+</div></header>
 <main>
 <section class="panel"><h2>Find a round</h2>
 <p class="help">Paste the first two games with their odds, just as you see them. Spacing does not matter, so copied text works as-is.</p>
