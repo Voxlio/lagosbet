@@ -1,90 +1,140 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<link rel="icon" href="logo.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LagosBet Finder</title>
+<title>Fixture Finder</title>
+<meta name="description" content="Paste the first two games with their odds to find the round and see every fixture and result.">
+<meta name="theme-color" content="#15171C">
+<link rel="icon" href="flowty-logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="flowty-logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f3d2e;--ink:#f4f7f2;--dim:#9fc2b2;--line:#f4f7f255;--hi:#f5e663;--card:#14503b}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(rgba(15,61,46,0.92), rgba(15,61,46,0.92)), url('/image/lagosl.jpg?auto=format&fit=crop&w=1920&q=80') center center / cover no-repeat fixed, var(--bg);color:var(--ink);font:16px/1.45 "Avenir Next",Futura,system-ui,sans-serif;padding:16px;max-width:720px;margin:auto;min-height:100vh}
-header{display:flex;align-items:center;gap:14px;padding:10px 0 14px;margin-bottom:14px;border-bottom:2px solid var(--line)}.logo{width:60px;height:60px;flex:none}h1{font-size:30px;line-height:1.1;margin:0;letter-spacing:-.5px}.tag{margin:4px 0 0;color:var(--dim);font-size:14px}h2{font-size:18px;margin:22px 0 8px}
-nav{display:flex;gap:8px;margin-bottom:14px}nav button{flex:1}
-button,input,textarea{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:6px;padding:10px}
-button{cursor:pointer}button.on,button.go{background:var(--hi);color:#0f3d2e;border-color:var(--hi);font-weight:700}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--hi)}
-textarea{width:100%;min-height:150px}input{width:100%}.row{display:flex;gap:8px;align-items:center;margin:8px 0}
-table{width:100%;border-collapse:collapse}td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
-td:first-child,th:first-child{text-align:left}.o{padding:6px 2px;min-width:46px}.o.sel{background:var(--hi);color:#0f3d2e;border-color:var(--hi)}
-.sc{font-weight:700;font-size:18px}.w{background:var(--hi);color:#0f3d2e;border-radius:4px;padding:1px 6px}
-.dim{color:var(--dim);font-size:14px}.hide{display:none}.msg{padding:10px;border:2px dashed var(--line);border-radius:6px;margin:10px 0}
-footer{margin-top:40px;padding:16px 0;border-top:1px solid var(--line);text-align:center;color:var(--dim);font-size:13px}
+:root{color-scheme:light;--paper:#E4E6E9;--panel:#F7F8F9;--slip:#FCFBF7;--ink:#15171C;--mute:#6B7079;--rule:#C9CDD3;--win:#0B6B45;--loss:#B22A2F;
+--sans:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"DM Mono",ui-monospace,Menlo,Consolas,monospace}
+*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+h2{margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.15}p{margin:0}
+.bar{background:var(--ink);color:#fff}.bar-in{max-width:680px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:11px}
+.mark{width:30px;height:30px;flex:none}.word{font-size:25px;font-weight:800;letter-spacing:-.045em;line-height:1}
+.bar-bal{margin-left:auto;text-align:right;font-family:var(--mono);font-size:14px;line-height:1.25}
+.bar-bal b{display:block;font:700 18px var(--sans)}.bar-bal span{color:#A7ADB8}
+main{max-width:680px;margin:0 auto;padding:18px 18px 40px;display:grid;gap:18px}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
+.help{color:var(--mute);font-size:14px;margin-top:6px;max-width:62ch}
+.sample{font:13px var(--mono);background:#EDEFF1;border:1px solid var(--rule);border-radius:7px;padding:9px 11px;margin-top:11px;white-space:pre-wrap}
+textarea,input{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--rule);border-radius:8px;padding:11px 12px;width:100%}
+textarea{margin-top:12px;min-height:148px;resize:vertical;font:14px/1.6 var(--mono)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.acts{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.btn{font:700 15px/1 var(--sans);padding:12px 16px;border-radius:8px;cursor:pointer;background:#fff;color:var(--ink);border:1px solid var(--rule)}
+.btn:hover{border-color:#9AA1AA}.btn-go{background:var(--ink);color:#fff;border-color:var(--ink)}.btn-go:hover{background:#000}.btn:disabled{opacity:.45;cursor:not-allowed}
+.notice{margin-top:12px;padding:11px 13px;border-radius:8px;font-size:14px;border:1px solid var(--loss);color:var(--loss);background:#FBF0F0}
+.round-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}.count{color:var(--mute);font:14px var(--mono)}
+.fx{list-style:none;margin:0;padding:0}.fx-row{display:grid;gap:10px;padding:14px 0;border-bottom:1px solid var(--rule)}.fx-row:last-child{border:0;padding-bottom:0}
+.fx-match{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}.fx-teams{font-weight:700;overflow-wrap:anywhere}.fx-v{font-weight:400;color:var(--mute)}
+.fx-score{font:500 15px var(--mono);padding:1px 7px;border-radius:5px;background:var(--ink);color:#fff}
+.fx-odds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{display:grid;gap:2px;justify-items:start;padding:8px 10px;border-radius:8px;cursor:pointer;background:#fff;border:1px solid var(--rule);color:var(--ink);text-align:left}
+.chip:hover{border-color:#9AA1AA}.chip-k{font-size:12px;font-weight:500;color:var(--mute);line-height:1.1}.chip-o{font:500 16px/1.1 var(--mono)}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}.chip[aria-pressed=true] .chip-k{color:#AEB4BE}
+.chip.landed{box-shadow:inset 0 0 0 2px var(--win);border-color:var(--win)}.chip.missed{box-shadow:inset 0 0 0 2px var(--loss);border-color:var(--loss)}
+.chip:disabled{cursor:default}
+@media(min-width:620px){.fx-row{grid-template-columns:1fr 294px;align-items:center;gap:18px}.chip{justify-items:center;text-align:center}}
+.empty{color:var(--mute);font-size:14px}
+.slip-wrap{display:grid;justify-items:center}
+.slip{width:100%;max-width:370px;background:var(--slip);border-radius:8px 8px 0 0;padding:16px 18px 14px;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.1),0 8px 22px -14px rgba(21,23,28,.5)}
+.slip-foot{width:100%;max-width:370px;height:12px;background:radial-gradient(circle at 6px 15px,transparent 6px,var(--slip) 6px) 0 0/12px 12px repeat-x;filter:drop-shadow(0 4px 8px rgba(21,23,28,.18))}
+.slip-top{display:flex;align-items:center;gap:8px;padding-bottom:12px}.slip-top .mark{width:17px;height:17px}.slip-top .word{font-size:17px}
+.slip-serial{margin-left:auto;font:13px var(--mono);color:var(--mute)}
+.tear{position:relative;border-top:2px dashed var(--rule);padding-top:14px}
+.tear::before,.tear::after{content:"";position:absolute;top:-12px;width:20px;height:20px;border-radius:50%;background:var(--paper)}.tear::before{left:-28px}.tear::after{right:-28px}
+.line{display:flex;gap:10px;align-items:baseline;font-size:14px;padding:4px 0}.line .t{overflow-wrap:anywhere}.line .k{color:var(--mute);font-size:13px}.line .n{margin-left:auto;font:500 14px var(--mono);white-space:nowrap}
+.sum{margin-top:12px;border-top:1px solid var(--rule);padding-top:10px}.big{font-weight:800;font-size:17px}.big .n{font-size:19px}
+.capped{color:var(--mute);font:12px var(--mono)}
+.stake-row{display:flex;align-items:center;gap:9px;margin-top:12px}.stake-row label{font-size:14px;color:var(--mute)}.stake-row input{flex:1;width:auto;font-family:var(--mono);padding:8px 10px}
+.note{margin-top:10px;font-size:13px;color:var(--mute)}.note.bad{color:var(--loss)}.slip .btn{margin-top:12px;width:100%}
+.stamp{position:absolute;right:14px;bottom:62px;font-weight:800;font-size:21px;padding:4px 11px;border-radius:5px;border:3px solid currentColor;transform:rotate(-8deg);animation:st .26s cubic-bezier(.2,.9,.3,1.25) both}
+.stamp.won{color:var(--win)}.stamp.lost{color:var(--loss)}
+@keyframes st{from{transform:rotate(-8deg) scale(2.3);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.stamp{animation:none}}
+footer{max-width:680px;margin:0 auto;padding:0 18px 40px;color:var(--mute);font-size:13px}footer b{color:var(--ink)}
+.go-row{display:flex;gap:9px;margin-top:12px}.go-row .btn{flex:1}.found{margin-top:4px;color:var(--mute);font:14px var(--mono)}
 </style></head><body>
-<header><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="logo" role="img" aria-label="Round Finder logo">
-<rect class="logo" rx="14" fill="#14503b"/>
-<rect x="5" y="5" width="54" height="54" rx="10" fill="none" stroke="#f4f7f2" stroke-opacity=".5" stroke-width="2"/>
-<line x1="5" y1="32" x2="59" y2="32" stroke="#f4f7f2" stroke-opacity=".5" stroke-width="2"/>
-<circle cx="28" cy="29" r="15" fill="#0f3d2e" stroke="#f5e663" stroke-width="4"/>
-<polygon points="28,22 34,26.5 31.8,33.5 24.2,33.5 22,26.5" fill="#f5e663"/>
-<line x1="39" y1="40" x2="52" y2="53" stroke="#f5e663" stroke-width="6" stroke-linecap="round"/>
-</svg>
-<div><h1>LagosBet Finder</h1><p class="tag">Fixtures, odds and results for any round</p></div></header>
-
-<section id="p2">
- <p class="dim">Paste the 8 games, one per line like <b>Real Madrid v Man City</b>. Add the first game's odds so it works on any browser.</p>
- <textarea id="games" placeholder="Real Madrid v Man City&#10;Spurs v Milan&#10;..."></textarea>
- <div class="row"><input id="od" placeholder="First game odds: 1.61 3.07 5.79"></div>
- <button class="go" id="find">Find Ticket</button>
- <div id="out2"></div>
-</section>
-
-<section id="slip" class="hide">
- <h2>Slip</h2><div id="sl"></div>
- <div class="row"><input id="stake" type="number" inputmode="numeric" value="100" aria-label="Stake"></div>
-</section>
-
-<footer>
-  oh yeah! Carterlist did this lol. Don't blame me if your tickets cut lol!
-</footer>
-
+<header class="bar"><div class="bar-in">
+<svg class="mark" viewBox="0 0 48 48" role="img" aria-label="Fixture Finder"><g fill="#fff"><rect x="9" y="10" width="7" height="28" rx="1.5"/><rect x="18" y="10" width="21" height="7" rx="1.5"/><rect x="18" y="21" width="14" height="7" rx="1.5"/></g></svg>
+<span class="word">fixture finder</span></div></header>
+<main>
+<section class="panel"><h2>Find a round</h2>
+<p class="help">Paste the first two games with their odds, just as you see them. Spacing does not matter, so copied text works as-is.</p>
+<div class="sample">
+<textarea id="paste" spellcheck="false" aria-label="First two games and odds" placeholder="Copy and Paste first two games from LagosBet here and see the results. lol"></textarea>
+<div class="acts"><button class="btn btn-go" id="find" type="button">Find round</button></div>
+<div id="notice" hidden></div></section>
+<section class="panel" id="res" hidden><div class="round-head"><h2 id="title"></h2><span class="count" id="count"></span></div>
+<ul class="fx" id="fixtures"></ul>
+<div class="go-row"><button class="btn" id="prev" type="button">Previous round</button><button class="btn" id="next" type="button">Next round</button></div></section>
+</main>
+<footer><p><b>How it works.</b>Why do you want to know? lol</p></footer>
 <script>
-const LIM={min:100,max:1e5,maxPicks:8,maxOdds:500};
-const Y=["Arsenal","Chelsea","Man United","Liverpool","Man City","Spurs","Newcastle","Aston Villa","Barcelona","Real Madrid","Atlético","Bayern","Dortmund","PSG","Juventus","Inter","Milan","Napoli","Enyimba","Rangers","Kano Pillars","Shooting Stars","Remo Stars","Rivers United"];
-function E(e){let o=e>>>0;return()=>{let e=o=o+0x6d2b79f5>>>0;return e=Math.imul(e^e>>>15,1|e),(((e^=e+Math.imul(e^e>>>7,61|e))^e>>>14)>>>0)/0x100000000}}
-const P=e=>Math.round(100*e)/100;
-// k = number of random numbers the browser's shuffle used; with teams given, the shuffle is skipped
-function fixtures(R,teams,k){const o=E(7919*R+13);let t;
- if(teams){for(let j=0;j<k;j++)o();t=teams}else t=[...Y].sort(()=>o()-.5);
- return Array.from({length:8},(_,a)=>{let i=.35*o()-.15,n=.42+i,r=.3-i,s=.24+.08*o(),l=n+s+r;n/=l;s/=l;r/=l;
- return{id:a,home:t[2*a],away:t[2*a+1],odds:{1:P(1/(1.12*n)),X:P(1/(1.12*s)),2:P(1/(1.12*r))},probs:{1:n,X:s,2:r}}})}
-function result(R,f){const t=E(104729*R+31*f.id+7),a=t(),p=f.probs,i=a<p[1]?"1":a<p[1]+p.X?"X":"2",n=()=>Math.floor(3*t());
- if(i==="X"){const e=n();return{pick:i,score:[e,e]}}const r=n(),s=r+1+Math.floor(2*t());return{pick:i,score:i==="1"?[s,r]:[r,s]}}
+"use strict";
+var Y=["Arsenal","Chelsea","Man United","Liverpool","Man City","Spurs","Newcastle","Aston Villa","Barcelona","Real Madrid","Atlético","Bayern","Dortmund","PSG","Juventus","Inter","Milan","Napoli","Enyimba","Rangers","Kano Pillars","Shooting Stars","Remo Stars","Rivers United"];
+var MAXR=20000;
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function r2(n){return Math.round(n*100)/100}
+function trunc(s,n){s=String(s);return s.length>n?s.slice(0,n)+"…":s}
+function fold(s){return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim()}
+function team(n){for(var i=0;i<Y.length;i++)if(fold(Y[i])===fold(n))return Y[i];return null}
 
-const $=id=>document.getElementById(id);let state={R:0,fx:[],sel:{}};
+/* ---- the game's own maths ---- */
+function E(e){var o=e>>>0;return function(){var e=o=o+0x6d2b79f5>>>0;return e=Math.imul(e^e>>>15,1|e),(((e^=e+Math.imul(e^e>>>7,61|e))^e>>>14)>>>0)/0x100000000}}
+/* the two shuffle orders browsers use: "chrome" (V8) and "safari" (JavaScriptCore) */
+function sortChrome(arr,cmp){var a=arr.slice(),n=a.length,run=2,desc=cmp(a[1],a[0])<0;
+ for(var i=2;i<n;i++){var o=cmp(a[i],a[i-1]);if(desc?o>=0:o<0)break;run++}
+ if(desc)for(var x=0,y=run-1;x<y;x++,y--){var t=a[x];a[x]=a[y];a[y]=t}
+ for(var st=run;st<n;st++){var p=a[st],l=0,r=st;while(l<r){var m=l+((r-l)>>1);if(cmp(p,a[m])<0)r=m;else l=m+1}
+  for(var q=st;q>l;q--)a[q]=a[q-1];a[l]=p}return a}
+function sortSafari(arr,cmp){var src=arr.slice(),n=src.length,dst=new Array(n);
+ for(var w=1;w<n;w*=2){for(var i=0;i<n;i+=2*w){var l=i,m=Math.min(i+w,n),r=m,e=Math.min(i+2*w,n),d=i;
+  while(l<m&&r<e){if(cmp(src[r],src[l])<0)dst[d++]=src[r++];else dst[d++]=src[l++]}
+  while(l<m)dst[d++]=src[l++];while(r<e)dst[d++]=src[r++]}
+  var tmp=src;src=dst;dst=tmp}return src}
+var SORT={chrome:sortChrome,safari:sortSafari};
+function fixtures(R,eng,count){var o=E(7919*R+13),t=SORT[eng](Y,function(){return o()-.5}),out=[];
+ for(var a=0;a<(count||8);a++){var i=.35*o()-.15,n=.42+i,r=.3-i,s=.24+.08*o(),l=n+s+r;n/=l;s/=l;r/=l;
+  out.push({id:a,home:t[2*a],away:t[2*a+1],odds:{"1":r2(1/(1.12*n)),X:r2(1/(1.12*s)),"2":r2(1/(1.12*r))},probs:{"1":n,X:s,"2":r}})}return out}
+function result(R,f){var t=E(104729*R+31*f.id+7),a=t(),p=f.probs,i=a<p["1"]?"1":a<p["1"]+p.X?"X":"2",n=function(){return Math.floor(3*t())};
+ if(i==="X"){var e=n();return{pick:i,score:[e,e]}}var r=n(),s=r+1+Math.floor(2*t());return{pick:i,score:i==="1"?[s,r]:[r,s]}}
 
-function render(R,fx,el){state={R,fx,sel:{}};
- el.innerHTML=`<table><tr><th>Match</th><th>1</th><th>X</th><th>2</th><th>Score</th></tr>`+fx.map(f=>{const r=result(R,f);f.res=r;
- return`<tr><td>${f.home} v ${f.away}</td>`+["1","X","2"].map(k=>`<td><button class="o" data-i="${f.id}" data-k="${k}">${f.odds[k]}</button></td>`).join("")+`<td class="sc">${r.score.join("-")}</td></tr>`}).join("")+`</table>
- <p class="dim">Oh yeah! Mazard did this. lol.</p>`;
- el.querySelectorAll(".o").forEach(b=>{if(fx[b.dataset.i].res.pick===b.dataset.k)b.style.borderColor="#f5e663";b.onclick=()=>pick(b)});
- $("slip").classList.add("hide");$("sl").innerHTML=""}
-function pick(b){const i=b.dataset.i,k=b.dataset.k;if(state.sel[i]===k)delete state.sel[i];else state.sel[i]=k;
- document.querySelectorAll(`.o[data-i="${i}"]`).forEach(x=>x.classList.toggle("sel",state.sel[i]===x.dataset.k));slip()}
-function slip(){const ids=Object.keys(state.sel);$("slip").classList.toggle("hide",!ids.length);if(!ids.length)return;
- const raw=ids.reduce((a,i)=>a*state.fx[i].odds[state.sel[i]],1),odds=Math.min(raw,LIM.maxOdds),stake=+$("stake").value;
- const won=ids.every(i=>state.fx[i].res.pick===state.sel[i]);let m="";
- if(ids.length>LIM.maxPicks)m="Too many picks (max "+LIM.maxPicks+").";else if(stake<LIM.min||stake>LIM.max)m=`Stake must be ${LIM.min}–${LIM.max}.`;
- $("sl").innerHTML=`<div class="msg">${ids.length} pick(s) · total odds <b>${P(odds)}</b>${raw>LIM.maxOdds?" (capped)":""}<br>Win would pay <b>${Math.round(stake*odds)}</b><br>Result: <span class="w">${m||(won?"WON":"LOST")}</span></div>`}
-$("stake").oninput=slip;
+/* ---- reading the paste (same reader as Flowty) ---- */
+function normalise(t){return String(t).replace(/\u00a0/g," ").replace(/[–—]/g,"-").replace(/(\d)(?=[A-Za-z])/g,"$1 ").replace(/([A-Za-z])(?=\d)/g,"$1 ")}
+function splitLine(l){var m=l.match(/\b(?:home|draw|away)\b/i),at=m?m.index:-1;
+ if(at===-1){var d=l.match(/\d+\.\d+/);at=d?d.index:-1}
+ if(at===-1)return{fixture:l,odds:""};if(at===0)return{fixture:"",odds:l};return{fixture:l.slice(0,at).trim(),odds:l.slice(at).trim()}}
+function lastOpen(a){for(var i=a.length-1;i>=0;i--)if(!a[i].odds)return a[i];return null}
+function parse(text){var lines=normalise(text).split(/\r?\n/),out=[];
+ for(var i=0;i<lines.length;i++){var line=lines[i].replace(/\s+/g," ").trim();if(!line)continue;var p=splitLine(line);
+  if(p.fixture){var vs=p.fixture.match(/^(.+?)\s+(?:vs?\.?|-)\s+(.+)$/i);if(!vs)return{error:'Cannot read "'+trunc(p.fixture,40)+'". Write it as "Real Madrid v Man City".'};
+   var h=team(vs[1]),a=team(vs[2]);if(!h||!a)return{error:'Unknown team "'+trunc(h?vs[2]:vs[1],30)+'". Check the spelling.'};
+   if(out.length>=8)return{error:"Paste only the first two games."};out.push({home:h,away:a,odds:null})}
+  if(p.odds){var nums=p.odds.match(/\d+(?:\.\d+)?/g)||[];if(nums.length<3)return{error:'"'+trunc(p.odds,40)+'" needs three odds: home, draw, away.'};
+   var t=lastOpen(out);if(!t)return{error:'The odds "'+trunc(p.odds,40)+'" have no game above them.'};
+   t.odds={"1":r2(+nums[0]),X:r2(+nums[1]),"2":r2(+nums[2])}}}
+ if(!out.length)return{error:"Paste the first game with its odds to start."};
+ var g=lastOpen(out);if(g)return{error:g.home+" v "+g.away+" has no odds yet. Add them on the next line."};return{games:out}}
 
-$("find").onclick=()=>{const out=$("out2");out.innerHTML='<p class="dim">Searching…</p>';setTimeout(()=>{
- const lines=$("games").value.split("\n").map(s=>s.trim()).filter(Boolean),teams=[];
- for(const l of lines){const p=l.split(/\s+(?:v|vs|-)\s+/i);if(p.length!=2){out.innerHTML=`<div class="msg">Can't read "${l}". Use "Home v Away".</div>`;return}
-  for(const n of p){const t=Y.find(y=>y.toLowerCase()===n.trim().toLowerCase());if(!t){out.innerHTML=`<div class="msg">Unknown team "${n}".</div>`;return}teams.push(t)}}
- if(lines.length!=8){out.innerHTML='<div class="msg">Paste exactly 8 games.</div>';return}
- const od=$("od").value.trim().split(/[\s,\/]+/).map(Number);
- if(od.length==3&&od.every(x=>x>0)){
-  for(let R=0;R<5000;R++)for(let k=0;k<=300;k++){const f=fixtures(R,teams,k)[0];
-   if(f.odds[1]===od[0]&&f.odds.X===od[1]&&f.odds[2]===od[2]){out.innerHTML=`<h2>Round ${R}</h2><div id="r"></div>`;render(R,fixtures(R,teams,k),$("r"));return}}
- }else{for(let R=0;R<30000;R++){const f=fixtures(R);if(f.every((x,i)=>x.home===teams[2*i]&&x.away===teams[2*i+1])){
-  out.innerHTML=`<h2>Round ${R}</h2><div id="r"></div>`;render(R,f,$("r"));return}}}
- out.innerHTML='<div class="msg">No round found. Add the first game\'s odds and try again.</div>'},30)};
+/* ---- finding and showing ---- */
+var cur={R:0,eng:"chrome"};
+function notice(m){var n=$("notice");if(!m){n.hidden=true;n.className="";n.textContent="";return}n.hidden=false;n.className="notice";n.textContent=m}
+function same(g,f){return g.home===f.home&&g.away===f.away&&g.odds["1"]===f.odds["1"]&&g.odds.X===f.odds.X&&g.odds["2"]===f.odds["2"]}
+function show(R,eng){cur={R:R,eng:eng};var fx=fixtures(R,eng);$("res").hidden=false;$("title").textContent="Round "+R;$("count").textContent="8 games";$("prev").disabled=R<=0;
+ $("fixtures").innerHTML=fx.map(function(f){var r=result(R,f);
+  var chips=[["1","Home"],["X","Draw"],["2","Away"]].map(function(m){return'<button type="button" class="chip'+(r.pick===m[0]?" landed":"")+'" disabled><span class="chip-k">'+m[1]+'</span><span class="chip-o">'+f.odds[m[0]].toFixed(2)+"</span></button>"}).join("");
+  return'<li class="fx-row"><div class="fx-match"><span class="fx-teams">'+esc(f.home)+' <span class="fx-v">v</span> '+esc(f.away)+'</span><span class="fx-score">'+r.score[0]+"–"+r.score[1]+'</span></div><div class="fx-odds">'+chips+"</div></li>"}).join("")}
+$("find").onclick=function(){var p=parse($("paste").value);if(p.error){notice(p.error);return}notice("Searching…");
+ setTimeout(function(){var g=p.games,engs=["chrome","safari"];
+  for(var R=0;R<=MAXR;R++)for(var e=0;e<2;e++){var fx=fixtures(R,engs[e],g.length),ok=true;
+   for(var i=0;i<g.length;i++)if(!same(g[i],fx[i])){ok=false;break}
+   if(ok){notice("");show(R,engs[e]);$("res").scrollIntoView({behavior:"smooth"});return}}
+  $("res").hidden=true;notice("No round found. Check the teams and odds, and paste the first game and its odds exactly as shown.")},30)};
+$("prev").onclick=function(){show(cur.R-1,cur.eng)};$("next").onclick=function(){show(cur.R+1,cur.eng)};
 </script></body></html>
